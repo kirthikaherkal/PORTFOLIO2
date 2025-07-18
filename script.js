@@ -56,20 +56,36 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
     }, 1500);
 });
 
-// Add loading animation to hire buttons
+// Add loading animation to hire buttons and direct CV download from assets folder
 document.querySelectorAll('.hire-btn, .btn-primary').forEach(btn => {
     btn.addEventListener('click', function(e) {
-        if (this.getAttribute('href') === '#contact') {
-            return;
-        }
-        e.preventDefault();
-        const originalText = this.textContent;
-        this.textContent = 'Loading...';
-        this.style.pointerEvents = 'none';
-        setTimeout(() => {
+        if (this.classList.contains('btn-secondary')) {
+            // Download CV button
+            e.preventDefault();
+            const originalText = this.textContent;
+            this.textContent = 'Downloading...';
+            this.style.pointerEvents = 'none';
+            const a = document.createElement('a');
+            a.href = 'assets/cv.pdf'; // Path to your CV PDF in assets folder
+            a.download = 'Kirthika_Herkal_CV.pdf';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
             this.textContent = originalText;
             this.style.pointerEvents = 'auto';
-        }, 1000);
+        } else if (this.getAttribute('href') === '#contact') {
+            // Allow normal navigation
+            return;
+        } else {
+            e.preventDefault();
+            const originalText = this.textContent;
+            this.textContent = 'Loading...';
+            this.style.pointerEvents = 'none';
+            setTimeout(() => {
+                this.textContent = originalText;
+                this.style.pointerEvents = 'auto';
+            }, 1000);
+        }
     });
 });
 
@@ -149,6 +165,8 @@ window.addEventListener('load', () => {
     if (heroTitle) {
         typeWriter(heroTitle, 'kirthika herkal', 150);
     }
+
+    // Remove download count fetch (no tracking needed)
 });
 
 // Add mobile menu toggle (basic implementation)
